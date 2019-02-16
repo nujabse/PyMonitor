@@ -11,7 +11,7 @@ class AlertWindow(QtWidgets.QDialog, Ui_Dialog):
         self.confirm.pressed.connect(sys.exit)
 
 
-app = QtWidgets.QApplication(sys.argv)
-application = AlertWindow()
-application.show()
-sys.exit(app.exec_())
+# app = QtWidgets.QApplication(sys.argv)
+# application = AlertWindow()
+# application.show()
+# sys.exit(app.exec_())

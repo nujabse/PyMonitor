@@ -3,6 +3,7 @@ from PyQt5 import QtWidgets
 import csv
 import time
 from reporter import Ui_Dialog
+# from alerter import AlertWindow
 
 
 class MyWindow(QtWidgets.QDialog, Ui_Dialog):
@@ -18,17 +19,9 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         self.row = []
 
     def check_user_input(self):
-        for item in [self.name_box, self.number_box]:
-            if item.toPlainText():
-                print(item.toPlainText())
-            else:
-                print('请填写完整信息！')
-                return False
-        for toggle in [self.condition_wrong, self.condition_right]:
-            if toggle.checkState:
-                print('仪器状况已检查，检查信息登记情况！')
-            else:
-                return False
+        items = [self.name_box.toPlainText(), self.number_box.toPlainText(), self.condition_right.checkState(), self.condition_wrong.checkState()]
+        if any(not item for item in items):
+            self.show_alerter()
 
     def check_machine_state(self):
         if self.condition_right.checkState() and self.condition_wrong.checkState():
@@ -66,6 +59,12 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
             with open('monitor.csv', 'at') as f:
                 f_csv = csv.writer(f)
                 f_csv.writerow(self.row)
+
+    # noinspection PyCallByClass
+    def show_alerter(self):
+        reply = QtWidgets.QMessageBox.warning(self, '警告', '请确保输入信息完整正确！', QtWidgets.QMessageBox.Yes |QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            print('继续吧')
 
 
 app = QtWidgets.QApplication(sys.argv)
