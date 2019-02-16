@@ -8,6 +8,7 @@ class AlertWindow(QtWidgets.QDialog, Ui_Dialog):
         super(AlertWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("警告")
+        self.confirm.pressed.connect(sys.exit)
 
 
 app = QtWidgets.QApplication(sys.argv)

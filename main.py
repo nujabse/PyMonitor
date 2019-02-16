@@ -21,6 +21,14 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         for item in [self.name_box, self.number_box]:
             if item.toPlainText():
                 print(item.toPlainText())
+            else:
+                print('请填写完整信息！')
+                return False
+        for toggle in [self.condition_wrong, self.condition_right]:
+            if toggle.checkState:
+                print('仪器状况已检查，检查信息登记情况！')
+            else:
+                return False
 
     def check_machine_state(self):
         if self.condition_right.checkState() and self.condition_wrong.checkState():
@@ -38,20 +46,26 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         record all the user input message to a list for data_writer to write to file
         :return: self.row
         """
-        print('Now recording user input')
-        self.row.append(time.asctime())
-        for item in [self.name_box, self.number_box]:
-            self.row.append(item.toPlainText())
-        if self.error_box.toPlainText():
-            self.row.append(self.error_box.toPlainText())
+        if self.check_user_input() is False:
+            pass
         else:
-            print("User input all recorded!")
+            print('Now recording user input')
+            self.row.append(time.asctime())
+            for item in [self.name_box, self.number_box]:
+                self.row.append(item.toPlainText())
+            if self.error_box.toPlainText():
+                self.row.append(self.error_box.toPlainText())
+            else:
+                print("User input all recorded!")
 
     def data_writer(self):
         print(self.row)
-        with open('monitor.csv', 'at') as f:
-            f_csv = csv.writer(f)
-            f_csv.writerow(self.row)
+        if self.check_user_input() is False:
+            pass
+        else:
+            with open('monitor.csv', 'at') as f:
+                f_csv = csv.writer(f)
+                f_csv.writerow(self.row)
 
 
 app = QtWidgets.QApplication(sys.argv)
