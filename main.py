@@ -39,32 +39,27 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         record all the user input message to a list for data_writer to write to file
         :return: self.row
         """
-        if self.check_user_input() is False:
-            pass
+        print('Now recording user input')
+        self.row.append(time.asctime())
+        for item in [self.name_box, self.number_box]:
+            self.row.append(item.toPlainText())
+        if self.error_box.toPlainText():
+            self.row.append(self.error_box.toPlainText())
         else:
-            print('Now recording user input')
-            self.row.append(time.asctime())
-            for item in [self.name_box, self.number_box]:
-                self.row.append(item.toPlainText())
-            if self.error_box.toPlainText():
-                self.row.append(self.error_box.toPlainText())
-            else:
-                print("User input all recorded!")
+            print("User input all recorded!")
 
     def data_writer(self):
         print(self.row)
-        if self.check_user_input() is False:
-            pass
-        else:
-            with open('monitor.csv', 'at') as f:
-                f_csv = csv.writer(f)
-                f_csv.writerow(self.row)
+        with open('monitor.csv', 'at') as f:
+            f_csv = csv.writer(f)
+            f_csv.writerow(self.row)
 
     # noinspection PyCallByClass
     def show_alerter(self):
         reply = QtWidgets.QMessageBox.warning(self, '警告', '请确保输入信息完整正确！', QtWidgets.QMessageBox.Yes |QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
             print('继续吧')
+            self.row = []
 
 
 app = QtWidgets.QApplication(sys.argv)
