@@ -79,12 +79,9 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         reply = QtWidgets.QMessageBox.information(self, '请核对以下信息是否属实！', user_input, QtWidgets.QMessageBox.Yes |QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
             print('登记完毕！')
-            self.row = []
-
 
 app = QtWidgets.QApplication(sys.argv)
 application = MyWindow()
 application.show()
 #  TODO: prohibit user from exiting through pressing ESC
-#  TODO: 解决无法输入中文的问题
 sys.exit(app.exec_())

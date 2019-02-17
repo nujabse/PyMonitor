@@ -71,6 +71,9 @@
         <height>16777215</height>
        </size>
       </property>
+      <property name="locale">
+       <locale language="Chinese" country="China"/>
+      </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>

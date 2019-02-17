@@ -40,6 +40,7 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
         self.name_box = QtWidgets.QPlainTextEdit(self.gridLayoutWidget)
         self.name_box.setMaximumSize(QtCore.QSize(272, 16777215))
+        self.name_box.setLocale(QtCore.QLocale(QtCore.QLocale.Chinese, QtCore.QLocale.China))
         self.name_box.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.name_box.setLineWidth(1)
         self.name_box.setObjectName("name_box")
