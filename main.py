@@ -94,7 +94,11 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
     def closeEvent(self, event):
         # block user quitting
         print("user is asking to quit!")
-        event.ignore()
+        if self.ready:
+            event.accept()
+        else:
+            event.ignore()
+            print('请完善所有数据！')
 
     def keyPressEvent(self, QKeyEvent):
         # block esc key
