@@ -3,7 +3,7 @@ from PyQt5 import QtWidgets, QtCore
 import csv
 import time
 from reporter import Ui_Dialog
-# from alerter import AlertWindow
+import psutil
 
 
 class MyWindow(QtWidgets.QDialog, Ui_Dialog):
@@ -12,6 +12,9 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowTitle("实验登记")
         # app.aboutToQuit.connect(self.closeEvent)
+        self.thread = StatusThread()
+        self.thread.start()
+        self.thread._status_signal.connect(self.status_refresh)
         # set confirm button event connect
         self.confirm.pressed.connect(self.check_machine_state)
         self.confirm.pressed.connect(self.recorder)
@@ -104,6 +107,28 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         # block esc key
         if QKeyEvent.key() == QtCore.Qt.Key_Escape:
             print("不能退出！")
+
+    def status_refresh(self, status):
+        self.device_state.setText(status)
+
+
+class StatusThread(QtCore.QThread):
+    _status_signal = QtCore.pyqtSignal(str)
+    proc_name_list = [proc.name() for proc in psutil.process_iter(attrs=['pid', 'name'])]
+
+    def __init__(self):
+        super(StatusThread, self).__init__()
+
+    def run(self, name='B291xUtility.exe', refresh_rate=0.5):
+        while 1:
+            if name in self.proc_name_list:
+                print('安捷伦软件已启动！')
+                self._status_signal.emit('已开启')
+                time.sleep(refresh_rate)
+            else:
+                print('安捷伦软件已关闭！')
+                self._status_signal.emit('已关闭')
+                time.sleep(refresh_rate)
 
 
 app = QtWidgets.QApplication(sys.argv)

@@ -77,6 +77,16 @@ class Ui_Dialog(object):
         self.confirm = QtWidgets.QPushButton(Dialog)
         self.confirm.setGeometry(QtCore.QRect(430, 440, 90, 32))
         self.confirm.setObjectName("confirm")
+        self.label_10 = QtWidgets.QLabel(Dialog)
+        self.label_10.setGeometry(QtCore.QRect(70, 450, 71, 16))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
+        self.device_state = QtWidgets.QLabel(Dialog)
+        self.device_state.setGeometry(QtCore.QRect(150, 450, 71, 16))
+        self.device_state.setObjectName("device_state")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -96,4 +106,6 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">实验千万条  安全第一条  登记不到位  同事两行泪 </span></p></body></html>"))
         self.label_6.setText(_translate("Dialog", "带红色※ 号的都是必填项目喔"))
         self.confirm.setText(_translate("Dialog", "确定"))
+        self.label_10.setText(_translate("Dialog", "安捷伦状态："))
+        self.device_state.setText(_translate("Dialog", "未开启"))
 
