@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 import csv
 import time
 from reporter import Ui_Dialog
@@ -10,6 +10,7 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self):
         super(MyWindow, self).__init__()
         self.setupUi(self)
+        self.setWindowIcon(QtGui.QIcon('Application.ico'))
         self.setWindowTitle("实验登记")
         # app.aboutToQuit.connect(self.closeEvent)
         self.thread = StatusThread()
@@ -47,7 +48,6 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
 
     def check_user_input(self):
         input_items = [self.name_box.toPlainText(), self.number_box.toPlainText()]
-        toggle_items = [self.condition_right.checkState(), self.condition_wrong.checkState()]
         if all(item for item in input_items):
             if self.condition_right.checkState() and not self.condition_wrong.checkState():
                 self.ready = True
@@ -114,14 +114,13 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
 
 class StatusThread(QtCore.QThread):
     _status_signal = QtCore.pyqtSignal(str)
-    proc_name_list = [proc.name() for proc in psutil.process_iter(attrs=['pid', 'name'])]
 
     def __init__(self):
         super(StatusThread, self).__init__()
 
     def run(self, name='B291xUtility.exe', refresh_rate=0.5):
         while 1:
-            if name in self.proc_name_list:
+            if name in [proc.name() for proc in psutil.process_iter(attrs=['pid', 'name'])]:
                 print('安捷伦软件已启动！')
                 self._status_signal.emit('已开启')
                 time.sleep(refresh_rate)
