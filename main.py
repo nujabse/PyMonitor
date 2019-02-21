@@ -10,9 +10,12 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self):
         super(MyWindow, self).__init__()
         self.setupUi(self)
+        # set main window Icon
         self.setWindowIcon(QtGui.QIcon('Application.ico'))
         self.setWindowTitle("实验登记")
-        # app.aboutToQuit.connect(self.closeEvent)
+        # set systemtray Icon
+        self.trayIcon = QtWidgets.QSystemTrayIcon(self)
+        self.trayIcon.setIcon(QtGui.QIcon('tray.ico'))
         self.thread = StatusThread()
         self.thread.start()
         self.thread._status_signal.connect(self.status_refresh)
@@ -22,7 +25,8 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         self.confirm.pressed.connect(self.check_user_input)  # 注意这里不需要引号和括号，只需要写出函数名就可以了
         self.confirm.pressed.connect(self.data_writer)
         self.row = []
-        self.ready = False
+        self.ready_to_confirm = False
+        self.ready_to_tray = False
 
 
     def check_machine_state(self):
@@ -50,10 +54,10 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         input_items = [self.name_box.toPlainText(), self.number_box.toPlainText()]
         if all(item for item in input_items):
             if self.condition_right.checkState() and not self.condition_wrong.checkState():
-                self.ready = True
+                self.ready_to_confirm = True
                 self.show_confirmation()
             if not self.condition_right.checkState() and self.condition_wrong.checkState() and self.error_box.toPlainText():
-                self.ready = True
+                self.ready_to_confirm = True
                 self.show_confirmation()
         else:
             self.show_alerter()
@@ -83,13 +87,14 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
             self.row = []
 
     def show_confirmation(self):
-        if self.ready:
+        if self.ready_to_confirm:
             # convert list to string
             user_input = '\n'.join(self.row)
             reply = QtWidgets.QMessageBox.information(self, '请核对以下信息是否属实！', user_input, QtWidgets.QMessageBox.Yes |QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.Yes:
                 print('登记完毕！')
-                self.close()
+                self.ready_to_tray = True
+                self.to_system_tray()
             if reply == QtWidgets.QMessageBox.No:
                 print('再确认一遍！')
                 self.row = []
@@ -97,7 +102,7 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
     def closeEvent(self, event):
         # block user quitting
         print("user is asking to quit!")
-        if self.ready:
+        if self.ready_to_confirm:
             event.accept()
         else:
             event.ignore()
@@ -110,6 +115,12 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
 
     def status_refresh(self, status):
         self.device_state.setText(status)
+    
+    def to_system_tray(self):
+        if self.ready_to_tray:
+            print('最小化到托盘！')
+            self.trayIcon.show()
+            self.hide()
 
 
 class StatusThread(QtCore.QThread):
@@ -132,5 +143,6 @@ class StatusThread(QtCore.QThread):
 
 app = QtWidgets.QApplication(sys.argv)
 application = MyWindow()
+application.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 application.show()
 sys.exit(app.exec_())
