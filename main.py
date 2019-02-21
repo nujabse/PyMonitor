@@ -5,6 +5,7 @@ import time
 from reporter import Ui_Dialog
 import psutil
 import os
+import subprocess
 
 
 class MyWindow(QtWidgets.QDialog, Ui_Dialog):
@@ -109,6 +110,9 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
             if reply == QtWidgets.QMessageBox.Yes:
                 print('登记完毕！')
                 self.ready_to_tray = True
+                path1 = os.path.abspath('.')
+                # use popen to run command async
+                subprocess.Popen(path1 + "/Agilent B2900A Quick IV Measurement Software/B291xUtility.exe")
                 self.to_system_tray()
             if reply == QtWidgets.QMessageBox.No:
                 print('再确认一遍！')
@@ -174,7 +178,7 @@ class StatusThread(QtCore.QThread):
                 self.stop_time_signal.emit(time.asctime())
                 time.sleep(refresh_rate)
 
-
+# TODO: add data encryption.
 app = QtWidgets.QApplication(sys.argv)
 application = MyWindow()
 application.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
