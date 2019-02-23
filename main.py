@@ -11,6 +11,8 @@ import subprocess
 class MyWindow(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self):
         super(MyWindow, self).__init__()
+        # check if multiple instances are running.
+        self.multi_run_alerter()
         self.setupUi(self)
         # set main window Icon
         self.setWindowIcon(QtGui.QIcon('Application.ico'))
@@ -46,6 +48,11 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
              "结束时间":""
         }
 
+    def multi_run_alerter(self):
+        if process_counter() > 2:
+            reply = QtWidgets.QMessageBox.warning(self, '警告', '不能同时登记两个人！', QtWidgets.QMessageBox.Yes)
+            if reply == QtWidgets.QMessageBox.Yes:
+                self.close()
 
     def check_machine_state(self):
         if self.condition_right.checkState() and self.condition_wrong.checkState():
@@ -149,7 +156,7 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
     def closeEvent(self, event):
         # block user quitting
         print("user is asking to quit!")
-        if self.ready_to_confirm:
+        if self.ready_to_exit or process_counter() > 2:
             event.accept()
         else:
             event.ignore()
@@ -190,11 +197,19 @@ class StatusThread(QtCore.QThread):
     device_status_signal = QtCore.pyqtSignal(str)
     start_time_signal = QtCore.pyqtSignal(str)
     stop_time_signal = QtCore.pyqtSignal(str)
+    multiple_run_signal = QtCore.pyqtSignal(str)
 
     def __init__(self):
         super(StatusThread, self).__init__()
 
     def run(self, name='B291xUtility.exe', refresh_rate=0.5):
+        # prevent user from opening multiple instances of this program.
+        if process_counter() == 2:
+            print('开了一个程序！')
+        else:
+            print('开了多个程序！')
+            self.multiple_run_signal.emit('不能多开程序！')
+
         while 1:
             if name in [proc.name() for proc in psutil.process_iter(attrs=['pid', 'name'])]:
                 print('安捷伦软件已启动！')
@@ -206,6 +221,11 @@ class StatusThread(QtCore.QThread):
                 self.device_status_signal.emit('已关闭')
                 self.stop_time_signal.emit(time.asctime())
                 time.sleep(refresh_rate)
+
+
+def process_counter(name='main.exe'):
+        count = [p.name() for p in psutil.process_iter()].count(name)
+        return count
 
 # TODO: add data encryption.
 app = QtWidgets.QApplication(sys.argv)
