@@ -14,7 +14,7 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         self.setupUi(self)
         # set main window Icon
         self.setWindowIcon(QtGui.QIcon('Application.ico'))
-        self.setWindowTitle("实验登记")
+        self.setWindowTitle("Agilent B2900A Quick IV Measurement Software")
         self.ready_to_confirm = False
         self.ready_to_tray = False
         self.ready_to_exit = False
@@ -182,5 +182,7 @@ class StatusThread(QtCore.QThread):
 app = QtWidgets.QApplication(sys.argv)
 application = MyWindow()
 application.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+# disable minimize and maximize.
+application.setWindowFlags(application.windowFlags() & ~QtCore.Qt.WindowMinimizeButtonHint & ~QtCore.Qt.WindowMaximizeButtonHint)
 application.show()
 sys.exit(app.exec_())
