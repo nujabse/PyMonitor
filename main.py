@@ -56,8 +56,8 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
     def recorder(self):
         print('Now recording user input')
         self.data["开始时间"] = time.asctime()
-        self.data["姓名"] = self.name_box.toPlainText()
-        self.data["学号"] = self.number_box.toPlainText()
+        self.data["姓名"] = self.name_box.text()
+        self.data["学号"] = self.number_box.text()
         if self.error_box.toPlainText():
             self.data["故障信息"] = self.error_box.toPlainText()
         else:
@@ -69,7 +69,7 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
             self.data["仪器状况"] = "故障"
 
     def check_user_input(self):
-        input_items = [self.name_box.toPlainText(), self.number_box.toPlainText()]
+        input_items = [self.name_box.text(), self.number_box.text()]
         if all(item for item in input_items):
             if self.condition_right.checkState() and not self.condition_wrong.checkState():
                 self.ready_to_confirm = True
@@ -80,6 +80,10 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         else:
             self.show_alerter()
 
+    def color_changer(self):
+        # changes color
+        pass
+    
     def data_writer(self):
         print(self.data)
         with open('monitor.csv', 'at') as f:
