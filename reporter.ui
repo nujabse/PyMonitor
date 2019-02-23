@@ -23,11 +23,8 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="7" column="2">
-     <widget class="QPlainTextEdit" name="error_box"/>
-    </item>
-    <item row="1" column="2">
-     <widget class="QPlainTextEdit" name="number_box"/>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="name_box"/>
     </item>
     <item row="6" column="3">
      <widget class="QCheckBox" name="condition_right">
@@ -60,25 +57,6 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPlainTextEdit" name="name_box">
-      <property name="maximumSize">
-       <size>
-        <width>272</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="locale">
-       <locale language="Chinese" country="China"/>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="lineWidth">
-       <number>1</number>
       </property>
      </widget>
     </item>
@@ -122,6 +100,12 @@
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="number_box"/>
+    </item>
+    <item row="7" column="2">
+     <widget class="QPlainTextEdit" name="error_box"/>
     </item>
    </layout>
   </widget>
@@ -207,6 +191,8 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="reporter.qrc"/>
+ </resources>
  <connections/>
 </ui>

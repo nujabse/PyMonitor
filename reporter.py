@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'reporter.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -18,12 +19,9 @@ class Ui_Dialog(object):
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
-        self.error_box = QtWidgets.QPlainTextEdit(self.gridLayoutWidget)
-        self.error_box.setObjectName("error_box")
-        self.gridLayout.addWidget(self.error_box, 7, 2, 1, 1)
-        self.number_box = QtWidgets.QPlainTextEdit(self.gridLayoutWidget)
-        self.number_box.setObjectName("number_box")
-        self.gridLayout.addWidget(self.number_box, 1, 2, 1, 1)
+        self.name_box = QtWidgets.QLineEdit(self.gridLayoutWidget)
+        self.name_box.setObjectName("name_box")
+        self.gridLayout.addWidget(self.name_box, 0, 2, 1, 1)
         self.condition_right = QtWidgets.QCheckBox(self.gridLayoutWidget)
         self.condition_right.setObjectName("condition_right")
         self.gridLayout.addWidget(self.condition_right, 6, 3, 1, 1)
@@ -38,13 +36,6 @@ class Ui_Dialog(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
-        self.name_box = QtWidgets.QPlainTextEdit(self.gridLayoutWidget)
-        self.name_box.setMaximumSize(QtCore.QSize(272, 16777215))
-        self.name_box.setLocale(QtCore.QLocale(QtCore.QLocale.Chinese, QtCore.QLocale.China))
-        self.name_box.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.name_box.setLineWidth(1)
-        self.name_box.setObjectName("name_box")
-        self.gridLayout.addWidget(self.name_box, 0, 2, 1, 1)
         self.label_5 = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
@@ -62,6 +53,12 @@ class Ui_Dialog(object):
         self.label_9 = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label_9.setObjectName("label_9")
         self.gridLayout.addWidget(self.label_9, 6, 0, 1, 1)
+        self.number_box = QtWidgets.QLineEdit(self.gridLayoutWidget)
+        self.number_box.setObjectName("number_box")
+        self.gridLayout.addWidget(self.number_box, 1, 2, 1, 1)
+        self.error_box = QtWidgets.QPlainTextEdit(self.gridLayoutWidget)
+        self.error_box.setObjectName("error_box")
+        self.gridLayout.addWidget(self.error_box, 7, 2, 1, 1)
         self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setGeometry(QtCore.QRect(120, 0, 441, 31))
         font = QtGui.QFont()
@@ -109,3 +106,5 @@ class Ui_Dialog(object):
         self.label_10.setText(_translate("Dialog", "安捷伦状态："))
         self.device_state.setText(_translate("Dialog", "未开启"))
 
+
+import reporter_rc
