@@ -15,6 +15,8 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         # set main window Icon
         self.setWindowIcon(QtGui.QIcon('Application.ico'))
         self.setWindowTitle("Agilent B2900A Quick IV Measurement Software")
+        # hide error label first
+        self.error_indicator.hide()
         self.ready_to_confirm = False
         self.ready_to_tray = False
         self.ready_to_exit = False
@@ -22,6 +24,9 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         self.trayIcon = QtWidgets.QSystemTrayIcon(self)
         self.trayIcon.setIcon(QtGui.QIcon('tray.ico'))
         # self.trayIcon.activated.connect(self.trayClick)
+        # set the * to change color when user enters text.
+        # self.name_box.textEdited.connect(self.name_color_changer)
+        self.input_watcher()
         # set app status monitor thread
         self.thread = StatusThread()
         self.thread.start()
@@ -80,9 +85,29 @@ class MyWindow(QtWidgets.QDialog, Ui_Dialog):
         else:
             self.show_alerter()
 
-    def color_changer(self):
+    def name_color_changer(self):
         # changes color
-        pass
+        print('输入用户名！')
+        self.name_indicator.hide()
+
+    def number_color_changer(self):
+        self.number_indicator.hide()
+
+    def good_condition_color_changer(self):
+        self.state_indicator.hide()
+    
+    def error_condition_color_changer(self):
+        # changes color only when condition wrong is checked
+        self.state_indicator.hide()
+        self.error_indicator.show()
+
+
+    def input_watcher(self):
+        self.name_box.textEdited.connect(self.name_color_changer)
+        self.number_box.textEdited.connect(self.number_color_changer)
+        self.condition_right.toggled.connect(self.good_condition_color_changer)
+        self.condition_wrong.toggled.connect(self.error_condition_color_changer)
+
     
     def data_writer(self):
         print(self.data)
