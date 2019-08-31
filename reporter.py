@@ -113,4 +113,4 @@ class Ui_Dialog(object):
         self.device_state.setText(_translate("Dialog", "未开启"))
 
 
-import reporter_rc
+
